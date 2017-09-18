@@ -16,6 +16,10 @@ void pinSetup(GPIO_InitTypeDef iopin, uint32_t pin, GPIOMode_TypeDef mode, GPIOS
 	GPIO_Init(port, &iopin);
 }
 
+/**
+ * "while" loop takes 4 cycles - for 1 microsecond delay, we need to divide
+ * with 4 million (4 MHz)
+ */
 uint32_t getSystemClock() {
 	RCC_ClocksTypeDef systemClock;
 	RCC_GetClocksFreq(&systemClock);
@@ -24,7 +28,7 @@ uint32_t getSystemClock() {
 }
 
 /**
- * "while" loop takes 4 cycles - for 1 microsecond delay, we need to divide with 4 million
+ *
  */
 void sleep_micros(uint32_t microseconds) {
 	uint32_t multiplier = getSystemClock();
