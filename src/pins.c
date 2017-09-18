@@ -30,14 +30,16 @@ uint32_t getSystemClock() {
 /**
  *
  */
-void sleep_micros(uint32_t microseconds) {
-	uint32_t multiplier = getSystemClock();
-	uint32_t micros = (microseconds * multiplier) - 10;
-	while (micros--);
+void sleep_seconds(uint32_t seconds) {
+	volatile uint32_t sStart = t_seconds;
+	while ((t_seconds - sStart) < seconds) {
+		asm volatile("nop");
+	}
 }
 
 void sleep_milis(uint32_t miliseconds) {
-	uint32_t multiplier = getSystemClock();
-	uint32_t milis = (1000 * miliseconds * multiplier) - 10;
-	while (milis--);
+	volatile uint32_t msStart = t_miliseconds;
+	while ((t_miliseconds - msStart) < miliseconds) {
+		asm volatile("nop");
+	}
 }
