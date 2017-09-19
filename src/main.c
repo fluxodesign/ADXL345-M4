@@ -50,9 +50,21 @@ int main(void) {
 	}
 }
 
+void SysTick_Handler() {
+	t_miliseconds++;
+	if (t_miliseconds % 1000 == 999) {
+		t_seconds++;
+	}
+}
 
 void setup() {
+	SystemInit();
+	SystemCoreClockUpdate();
+	SysTick_Config(SystemCoreClock / MilisecondsIT);
+
 	RCC_AHB1PeriphClockCmd(LED4_GPIO_CLK, ENABLE);
+	t_miliseconds = t_seconds = 0;
+
 	pinSetup(Pin_Green, LED4_PIN, GPIO_Mode_OUT, GPIO_Speed_2MHz, GPIO_OType_PP, GPIO_PuPd_UP, LED4_GPIO_PORT);
 	pinSetup(Pin_Red, LED5_PIN, GPIO_Mode_OUT, GPIO_Speed_2MHz, GPIO_OType_PP, GPIO_PuPd_UP, LED5_GPIO_PORT);
 	pinSetup(Pin_Blue, LED6_PIN, GPIO_Mode_OUT, GPIO_Speed_2MHz, GPIO_OType_PP, GPIO_PuPd_UP, LED6_GPIO_PORT);
